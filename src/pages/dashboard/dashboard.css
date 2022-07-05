@@ -1,0 +1,131 @@
+.dashboard-bg {
+    height: 100vh;
+}
+
+.dashboard-container {
+    height: 90vh;
+    
+}
+
+
+.first-column {
+    padding-top: 24px;
+    background-color: black;
+    box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+}
+
+.first-column li {
+    padding: 0px 8px;
+
+}
+
+.first-column ul {
+    border-bottom:  1px solid #282828;;
+
+}
+
+
+.first-column a {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    gap: 16px;
+    height: 40px;
+    padding: 0 16px;
+}
+
+
+.first-column a:hover {
+    color: white;
+}
+
+.first-column span:hover {
+    font-weight: 900;
+}
+
+
+.d-logo {
+    width: 100%;
+    max-width: 131px;
+ 
+}
+
+
+.second-column {
+    background: linear-gradient(215deg,#171d26 15%,#000 85%) no-repeat 50% fixed;
+}
+
+.second-column form {
+    height: auto;
+    width: 90%;
+}
+
+.second-column input {
+    min-width: 300px;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    border-radius: 500px;
+    height: 40px;
+    padding: 6px 48px;
+    font-weight: 400px;
+    text-overflow: ellipsis;
+}
+
+
+
+
+.table-songs thead {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom:  1px solid #282828;;
+}
+
+tbody tr {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+tbody tr:hover {
+    background-color: #201f1fd4;
+    color: white;
+ }
+
+
+thead > tr:hover {
+    background-color: transparent;
+
+ }
+
+
+.third-column {
+    background-color: black;
+}
+
+.play-container {
+    border-top: 1px solid #282828;
+    background-color: black;
+    height: 10vh;
+}
+
+.proBar { 
+    height: 3px;
+    border-radius: 2px;
+    background-color: #282828;
+}
+
+.proBar div { 
+    background-color: white;
+}
+
+.table-songs {
+    width: 90%;
+    color: #b3b3b3;
+}
+
