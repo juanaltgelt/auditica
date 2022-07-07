@@ -49,6 +49,13 @@ const resetPassword = async (accessToken, password) => {
   })
 }
 
+const getAudio = async (mediaId, accessToken) => {
+  return await axios.get(`/api/storage/${mediaId}`, {accessToken})
+  .then((response)=> {
+    return response.data
+  })
+}
+
 
 
 const authService = {
@@ -57,7 +64,8 @@ const authService = {
   logout,
   getCurrentUser,
   recoveryEmail,
-  resetPassword
+  resetPassword,
+  getAudio
 };
 
 export default authService;

@@ -40,7 +40,7 @@ function Login() {
       } else if (err.response.status === 400) {
         setErrMsg("Missing Username or Password");
       } else if (err.response.status === 401 || 403) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Wrong user or password");
       } else {
         setErrMsg("Login Failed");
       }
@@ -66,10 +66,11 @@ function Login() {
                 Sign up for free
               </Link>
             </p>
-          </div>
-          <p ref={errRef} aria-live="assertive" className="error-msg">
+            <p ref={errRef} aria-live="assertive" className="error-msg">
             {errMsg}
           </p>
+          </div>
+          
           <div className="inputs d-flex flex-column w-100 px-sm-5  ">
             <label htmlFor="email" className="mb-2">
               Email address

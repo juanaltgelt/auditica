@@ -3,11 +3,11 @@ import React from "react";
 function TrackRow({track, index}) {
   return (
     <tr key={index}>
-      <th>{index + 1}</th>
-      <th>{track.name}</th>
-      <th>{track.artist}</th>
-      <th>{track.album}</th>
-      <th>{track.duration}</th>
+      <td>{index + 1}</td>
+      <td>{track.name}</td>
+      <td>{track.artist}</td>
+      <td>{track.album}</td>
+      <td>{track.duration}</td>
     </tr>
   );
 }
