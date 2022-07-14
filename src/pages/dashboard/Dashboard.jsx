@@ -18,7 +18,6 @@ function Dashboard() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [songsUrls, setSongsUrls] = useState([]);
-  const audioRef = useRef();
 
 
   useEffect(() => {
@@ -91,15 +90,11 @@ function Dashboard() {
         </div>
         <div className="col-2 third-column"></div>
       </div>
-      <audio
-        src="http://localhost:3001/file-1656982766881.mp3"
-        ref={audioRef}
-      />
+     
       <AudioPlayer
         songsUrls={songsUrls}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
-        audioRef={audioRef}
       />
     </div>
   );
