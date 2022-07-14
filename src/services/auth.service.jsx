@@ -1,7 +1,5 @@
 import axios from "../api/axios";
-
-const url = "/api/auth/";
-const LOGIN_URL = "/api/auth/login";
+const url = "/api/auth";
 
 const signup = async (name, age, email, password) => {
   return await axios.post(url + "/register", {
@@ -10,19 +8,19 @@ const signup = async (name, age, email, password) => {
     email,
     password,
   }).then((response) => {
-    localStorage.setItem("token", JSON.stringify(response.data));
-    return response.data
+    localStorage.setItem("token", JSON.stringify(response));
+    return response
   })
 };
 
 const login = async (email, password) => {
   return await axios
-    .post(LOGIN_URL, { email, password })
+    .post(url + "/login", { email, password })
     .then(({data: response}) => {
-      if (response.data.token) {      
-        localStorage.setItem("token", JSON.stringify(response.data));
+      if (response.token) {     
+        localStorage.setItem("token", JSON.stringify(response));
       }
-      return response.data
+      return response
     });
 };
 
@@ -49,13 +47,6 @@ const resetPassword = async (accessToken, password) => {
   })
 }
 
-const getAudio = async (mediaId, accessToken) => {
-  return await axios.get(`/api/storage/${mediaId}`, {accessToken})
-  .then((response)=> {
-    return response.data
-  })
-}
-
 
 
 const authService = {
@@ -65,7 +56,6 @@ const authService = {
   getCurrentUser,
   recoveryEmail,
   resetPassword,
-  getAudio
 };
 
 export default authService;

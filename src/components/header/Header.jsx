@@ -15,8 +15,6 @@ import authService from "../../services/auth.service";
 function Header() {
   const { auth, setAuth } = useContext(Authcontext);
 
-  
-
   const logOut = () => {
     authService.logout();
     setAuth("");

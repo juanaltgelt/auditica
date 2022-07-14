@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import Authcontext from "../../context/AuthProvider";
 import { Audio } from "react-loader-spinner";
 import { Table } from "react-bootstrap";
@@ -6,20 +6,20 @@ import "./dashboard.css";
 import axios from "../../api/axios";
 import TrackFilter from "../../components/TrackFilter";
 import TrackRow from "../../components/TrackRow";
-import AudioPlayer from "../../components/AudioPlayer";
 import FirstColumn from "../../components/FirstColumn";
-import { useParams } from "react-router-dom";
-import authService from "../../services/auth.service";
+import AudioPlayer from "../../components/audioPlayer/AudioPlayer";
 
 const TRACKS_URL = "/api/tracks";
 
 function Dashboard() {
-
-  const mediaId = useParams()
-
   const { auth } = useContext(Authcontext);
-  const [tracks, setTracks] = useState([]);
+  const [songsData, setSongsData] = useState([]);
   const [filter, setFilter] = useState("");
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [songsUrls, setSongsUrls] = useState([]);
+  const audioRef = useRef();
+
 
   useEffect(() => {
     async function getTracks() {
@@ -27,7 +27,12 @@ function Dashboard() {
         const response = await axios.get(TRACKS_URL, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        setTracks(response.data.data);
+        setSongsUrls(
+          response.data.map(({ audio }) => {
+            return audio.url;
+          })
+        );
+        setSongsData(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -35,21 +40,7 @@ function Dashboard() {
     getTracks();
   }, [auth.token]);
 
-  console.log(tracks);
-
-  const handleAudio = async () => {
-
-    try {
-      const response = await authService.getAudio(mediaId, {
-        headers: { Authorization: `Bearer ${auth.token}`},
-      });
-      console.log(response)
-    } catch (e) {
-      console.log(e);
-      }
-    }
-
-
+  console.log(songsUrls);
 
   return (
     <div className="container-fluid text-light dashboard-bg">
@@ -68,14 +59,20 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {tracks.length ? (
-                tracks
+              {songsData.length ? (
+                songsData
                   .filter(({ name }) =>
                     name.toLowerCase().startsWith(filter.toLowerCase())
                   )
                   .slice(0, 15)
                   .map((track, index) => (
-                    <TrackRow key={index} track={track} index={index} onClick={() => handleAudio()} />
+                    <TrackRow
+                      key={index}
+                      track={track}
+                      index={index}
+                      setIsPlaying={setIsPlaying}
+                      isPlaying={isPlaying}
+                    />
                   ))
               ) : (
                 <tr>
@@ -94,7 +91,16 @@ function Dashboard() {
         </div>
         <div className="col-2 third-column"></div>
       </div>
-      <AudioPlayer />
+      <audio
+        src="http://localhost:3001/file-1656982766881.mp3"
+        ref={audioRef}
+      />
+      <AudioPlayer
+        songsUrls={songsUrls}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        audioRef={audioRef}
+      />
     </div>
   );
 }
