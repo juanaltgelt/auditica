@@ -4,6 +4,7 @@ import { ReactComponent as Home } from "../assets/dashboard/home.svg";
 import { ReactComponent as Dlogo } from "../assets/dashboard/dashboard-logo.svg";
 import { ReactComponent as Search } from "../assets/dashboard/browse.svg";
 import { ReactComponent as Library } from "../assets/dashboard/library.svg";
+import { ReactComponent as AddSong } from "../assets/dashboard/addSong.svg";
 
 
 function FirstColumn() {
@@ -32,6 +33,12 @@ function FirstColumn() {
               <Link to="/">
                 <Library />
                 <span>Your library</span>
+              </Link>
+            </li>
+            <li className="mb-1">
+              <Link to="/editMode">
+                <AddSong/>
+                <span>Add New Song</span>
               </Link>
             </li>
           </ul>

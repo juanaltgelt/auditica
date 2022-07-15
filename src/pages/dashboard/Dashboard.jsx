@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import Authcontext from "../../context/AuthProvider";
 import { Audio } from "react-loader-spinner";
 import { Table } from "react-bootstrap";
@@ -18,6 +18,7 @@ function Dashboard() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [songsUrls, setSongsUrls] = useState([]);
+  const [trackIndex, setTrackIndex] = useState(0);
 
 
   useEffect(() => {
@@ -40,6 +41,9 @@ function Dashboard() {
   }, [auth.token]);
 
   console.log(songsUrls);
+  console.log(songsData);
+
+  
 
   return (
     <div className="container-fluid text-light dashboard-bg">
@@ -70,7 +74,10 @@ function Dashboard() {
                       track={track}
                       index={index}
                       setIsPlaying={setIsPlaying}
+                      setTrack
                       isPlaying={isPlaying}
+                      trackIndex={trackIndex}
+                      setTrackIndex={setTrackIndex}
                     />
                   ))
               ) : (
@@ -95,6 +102,8 @@ function Dashboard() {
         songsUrls={songsUrls}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
+        trackIndex={trackIndex}
+        setTrackIndex={setTrackIndex}
       />
     </div>
   );

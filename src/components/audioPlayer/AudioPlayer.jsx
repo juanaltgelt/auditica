@@ -5,25 +5,21 @@ import { ReactComponent as SkipNextBtn } from "../../assets/dashboard/skipNextBt
 import { ReactComponent as RepeatBtn } from "../../assets/dashboard/repeatBtn.svg";
 import { ReactComponent as SoundBtn } from "../../assets/dashboard/soundBtn.svg";
 import { ReactComponent as PlayBtn } from "../../assets/dashboard/playBtn.svg";
-import {useRef, useState} from "react"
+import {useRef} from "react"
 import "./audioPlayer.css"
-
-import { ProgressBar } from "react-bootstrap";
-
-function AudioPlayer({ isPlaying, setIsPlaying, songsUrls }) {
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [trackProgress, setTrackProgress] = useState(0);
+function AudioPlayer({ isPlaying, setIsPlaying, songsUrls, setTrackIndex, trackIndex }) {
+  
 
   
   const audioSrc = songsUrls[trackIndex];
-  console.log(songsUrls);
-  console.log(audioSrc);
-  console.log(trackIndex);
+
   const audioRef = useRef(new Audio(audioSrc));
+
+  console.log(audioRef.current.currentTime );
 
   const play = () => {
     const audio = audioRef.current;
-    audio.volume = 0.1;
+    audio.volume = .7;
 
     if (!isPlaying) {
       setIsPlaying(true);
@@ -52,6 +48,14 @@ function AudioPlayer({ isPlaying, setIsPlaying, songsUrls }) {
     }
   };
 
+  const changeVolume = (e) => {
+    audioRef.current.volume = e.target.value
+  }
+
+  const changeCurrentTime = (e) => {
+    audioRef.current.currentTime = e.target.value
+  }
+
   return (
     <div className="row play-container ">
        <audio
@@ -67,21 +71,13 @@ function AudioPlayer({ isPlaying, setIsPlaying, songsUrls }) {
       </div>
       <div className="col-8 song-play-info d-flex justify-content-around align-items-center">
         <div className=" d-flex align-items-center">
-          <div
-            className="progress-bar-cover"
-            
-          ></div>
-          <div
-            className="thumb"
-          
-          ></div>
 
-          <input type="range" step="0.01" />
+          <input type="range" step="0.01" onChange={changeCurrentTime}  />
         </div>
       </div>
       <div className="col-2 music-control-tab d-flex  justify-content-center align-items-center">
         <SoundBtn />
-        <ProgressBar now={50} className="proBar w-25 mx-2" />
+        <input type="range" step="0.01" onChange={changeVolume} min={0} max={1} />
       </div>
     </div>
   );
