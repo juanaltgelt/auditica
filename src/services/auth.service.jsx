@@ -48,7 +48,6 @@ const resetPassword = async (accessToken, password) => {
 }
 
 
-
 const authService = {
   signup,
   login,

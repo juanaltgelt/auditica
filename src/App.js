@@ -12,6 +12,8 @@ import Authcontext from "./context/AuthProvider";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
 
+
+
 function App() {
   const {auth} = useContext(Authcontext)
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -31,12 +33,14 @@ function App() {
           <Route exact path="/forgot" element={<ForgotPassword/>}/>
           <Route exact path="/reset/:token" element={<ResetPassword/>}/>
         </Route>
-  
+
+        
         {currentUser && (
           <Route path="/dashboard" exact element={<Dashboard />}></Route>
         )}
 
         <Route exact path="*" element={<NotFound />} />
+  
       </Routes>
     </div>
   );

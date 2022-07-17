@@ -1,46 +1,49 @@
-import { Form, Button, Modal } from "react-bootstrap";
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import {Form, Modal, Button} from "react-bootstrap";
+import {useState, useContext} from "react"
 import Authcontext from "../../context/AuthProvider";
 import axios from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const trackUrl = "http://localhost:3001/api/tracks"
 
-function AddNewSong({ show, setShow }) {   
-    const { auth } = useContext(Authcontext);
-    const [name, setName] = useState("");
-    const [artist, setArtist] = useState("");
-    const [album, setAlbum] = useState("");
-    const [duration, setDuration] = useState("");
-    const [myfile, setMyFile] = useState("");
-
-    const navigate = useNavigate();
-
+function EditSong({showEdit, setShowEdit, track}) {
+  const { auth } = useContext(Authcontext);
+  const [name, setName] = useState(track.name);
+  const [artist, setArtist] = useState(track.artist);
+  const [album, setAlbum] = useState(track.album);
+  const [duration, setDuration] = useState(track.duration);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(trackUrl, {name, artist, album, duration, myfile}, {
-        headers: { Authorization: `Bearer ${auth.token}`, 'Content-Type': 'multipart/form-data' },
-      })
-            navigate("/dashboard");
+      await axios.put(`${trackUrl}/${track._id}`, {name, artist, album, duration}, {
+        headers: { Authorization: `Bearer ${auth.token}`},
+      }).then((response) => {
+        console.log(response);
+        navigate("/dashboard");
             setName("")
             setArtist("")
             setAlbum("")
             setDuration("")
-            setMyFile("")
+      })
+            
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleClose = () => setShow(false);
+  console.log(name, artist, album, duration);
 
+
+
+
+  const handleClose = () => setShowEdit(false);
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showEdit} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Song +</Modal.Title>
+          <Modal.Title>Edit Song</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -48,17 +51,15 @@ function AddNewSong({ show, setShow }) {
               <Form.Control
                 type="text"
                 placeholder="Enter new trackname.."
-             
                 name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
                 required
                 autoFocus
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
             <Form.Group>
               <Form.Control
-          
                 type="text"
                 placeholder="Enter artist.."
                 name="artist"
@@ -69,7 +70,6 @@ function AddNewSong({ show, setShow }) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-          
                 type="text"
                 placeholder="Enter album.."
                 name="album"
@@ -80,28 +80,20 @@ function AddNewSong({ show, setShow }) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-     
-                type="number"
+                type="text"
                 placeholder="Enter duration"
                 name="duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Enter song file input</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setMyFile(e.target.files[0])}
-              />
-            </Form.Group>
             <Button variant="success" type="submit">
-              Add New Song
+              Edit Song
             </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose} >
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
@@ -113,4 +105,4 @@ function AddNewSong({ show, setShow }) {
   );
 }
 
-export default AddNewSong;
+export default EditSong;

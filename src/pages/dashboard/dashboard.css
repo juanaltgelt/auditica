@@ -56,7 +56,12 @@
 
 .second-column {
     background: linear-gradient(215deg,#171d26 15%,#000 85%) no-repeat 50% fixed;
+    overflow-y: scroll;
+    max-height: 90vh;
 }
+
+
+
 
 .second-column form {
     height: auto;
@@ -73,7 +78,6 @@
     font-weight: 400px;
     text-overflow: ellipsis;
 }
-
 
 
 
@@ -129,3 +133,17 @@ thead > tr:hover {
     color: #b3b3b3;
 }
 
+::-webkit-scrollbar {
+    width: 0;
+}
+
+
+
+.delete-btn {
+    background: none;
+    border: none;
+}
+
+.table-row {
+    vertical-align: middle;
+}

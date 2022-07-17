@@ -8,18 +8,18 @@ import TrackFilter from "../../components/TrackFilter";
 import TrackRow from "../../components/TrackRow";
 import FirstColumn from "../../components/FirstColumn";
 import AudioPlayer from "../../components/audioPlayer/AudioPlayer";
-
 const TRACKS_URL = "/api/tracks";
 
 function Dashboard() {
   const { auth } = useContext(Authcontext);
   const [songsData, setSongsData] = useState([]);
   const [filter, setFilter] = useState("");
+  console.log(songsData)
+ 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [songsUrls, setSongsUrls] = useState([]);
   const [trackIndex, setTrackIndex] = useState(0);
-
 
   useEffect(() => {
     async function getTracks() {
@@ -38,20 +38,16 @@ function Dashboard() {
       }
     }
     getTracks();
-  }, [auth.token]);
+  }, [auth]);
 
-  console.log(songsUrls);
-  console.log(songsData);
-
-  
 
   return (
     <div className="container-fluid text-light dashboard-bg">
       <div className="row dashboard-container">
         <FirstColumn />
-        <div className="col-8 second-column d-flex flex-column align-items-center">
+        <div className="col-10 second-column d-flex flex-column align-items-center">
           <TrackFilter setFilter={setFilter} />
-          <Table className="p-1 table-songs table-borderless">
+          <Table className="p-1 table-songs table-borderless table-column">
             <thead>
               <tr>
                 <th>#</th>
@@ -59,6 +55,7 @@ function Dashboard() {
                 <th>artist</th>
                 <th>album</th>
                 <th>duration</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -67,14 +64,13 @@ function Dashboard() {
                   .filter(({ name }) =>
                     name.toLowerCase().startsWith(filter.toLowerCase())
                   )
-                  .slice(0, 15)
+                  .slice(0, 20)
                   .map((track, index) => (
                     <TrackRow
                       key={index}
                       track={track}
                       index={index}
                       setIsPlaying={setIsPlaying}
-                      setTrack
                       isPlaying={isPlaying}
                       trackIndex={trackIndex}
                       setTrackIndex={setTrackIndex}
@@ -94,8 +90,8 @@ function Dashboard() {
               )}
             </tbody>
           </Table>
+
         </div>
-        <div className="col-2 third-column"></div>
       </div>
      
       <AudioPlayer
