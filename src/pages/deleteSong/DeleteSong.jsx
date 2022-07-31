@@ -7,14 +7,13 @@ const trackUrl = "http://localhost:3001/api/tracks"
 
 function DeleteSong({ showDelete, setShowDelete, track }) {
     const { auth } = useContext(Authcontext);
-    console.log(track._id);
 
     const deleteSong = () => {
         try {
             axios.delete(`${trackUrl}/${track._id}`, {
                 headers: { Authorization: `Bearer ${auth.token}`, 'Content-Type': 'multipart/form-data' },
               })
-              handleClose()
+              window.location.reload();
         } catch (error) {
             console.log(error);
         }

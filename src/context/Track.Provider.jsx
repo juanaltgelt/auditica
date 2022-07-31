@@ -4,7 +4,7 @@ const Trackcontext = createContext([])
 
 export const TrackProvider = ({ children }) => {
     const [track, setTrack] = useState([]);
-    console.log(track);
+    
 
     
     return (

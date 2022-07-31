@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext} from "react";
 import Authcontext from "../../context/AuthProvider";
 import { Audio } from "react-loader-spinner";
 import { Table } from "react-bootstrap";
@@ -8,18 +8,34 @@ import TrackFilter from "../../components/TrackFilter";
 import TrackRow from "../../components/TrackRow";
 import FirstColumn from "../../components/FirstColumn";
 import AudioPlayer from "../../components/audioPlayer/AudioPlayer";
+import { useRef } from "react";
 const TRACKS_URL = "/api/tracks";
 
 function Dashboard() {
   const { auth } = useContext(Authcontext);
-  const [songsData, setSongsData] = useState([]);
   const [filter, setFilter] = useState("");
-  console.log(songsData)
- 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [songsUrls, setSongsUrls] = useState([]);
   const [trackIndex, setTrackIndex] = useState(0);
+  const [trackProgress, setTrackProgress] = useState(0);
+
+const audioSrc = songsUrls[trackIndex]
+
+console.log(audioSrc?.audio?.url);
+console.log(songsUrls);
+
+const audioRef= useRef()
+const intervalRef = useRef();
+const isReady = useRef(false);
+
+console.log(audioRef);
+
+console.log(intervalRef);
+
+ // const audioRef = useRef(new Audio(audioSrc?.audio?.url));
+ 
+
 
   useEffect(() => {
     async function getTracks() {
@@ -28,11 +44,11 @@ function Dashboard() {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setSongsUrls(
-          response.data.map(({ audio }) => {
-            return audio.url;
+          response.data.map((song, index) => {
+            return { ...song, index };
           })
         );
-        setSongsData(response.data);
+        
       } catch (error) {
         console.log(error);
       }
@@ -40,7 +56,19 @@ function Dashboard() {
     getTracks();
   }, [auth]);
 
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play();
+      
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPlaying]);
+ 
 
+
+ 
+  
   return (
     <div className="container-fluid text-light dashboard-bg">
       <div className="row dashboard-container">
@@ -55,16 +83,15 @@ function Dashboard() {
                 <th>artist</th>
                 <th>album</th>
                 <th>duration</th>
-                <th>Actions</th>
+                {auth.user.role[0] === "admin" && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
-              {songsData.length ? (
-                songsData
+              {songsUrls.length ? (
+                songsUrls
                   .filter(({ name }) =>
                     name.toLowerCase().startsWith(filter.toLowerCase())
                   )
-                  .slice(0, 20)
                   .map((track, index) => (
                     <TrackRow
                       key={index}
@@ -74,6 +101,9 @@ function Dashboard() {
                       isPlaying={isPlaying}
                       trackIndex={trackIndex}
                       setTrackIndex={setTrackIndex}
+                      song={audioSrc}
+                      songsUrls={songsUrls}
+                      audioRef={audioRef}
                     />
                   ))
               ) : (
@@ -90,16 +120,22 @@ function Dashboard() {
               )}
             </tbody>
           </Table>
-
         </div>
       </div>
-     
+      <audio src={audioSrc?.audio?.url} ref={audioRef} />
       <AudioPlayer
         songsUrls={songsUrls}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         trackIndex={trackIndex}
         setTrackIndex={setTrackIndex}
+        song={audioSrc}
+      audioRef={audioRef}
+      trackProgress={trackProgress}
+      setTrackProgress={trackProgress}    
+      intervalRef={intervalRef}  
+      isReady={isReady}
+   
       />
     </div>
   );

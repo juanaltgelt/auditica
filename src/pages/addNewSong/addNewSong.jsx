@@ -1,7 +1,7 @@
 import { Form, Button, Modal } from "react-bootstrap";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import Authcontext from "../../context/AuthProvider";
+import "./addNewSong.css";
 import axios from "../../api/axios";
 
 const trackUrl = "http://localhost:3001/api/tracks"
@@ -14,7 +14,6 @@ function AddNewSong({ show, setShow }) {
     const [duration, setDuration] = useState("");
     const [myfile, setMyFile] = useState("");
 
-    const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -23,7 +22,7 @@ function AddNewSong({ show, setShow }) {
       await axios.post(trackUrl, {name, artist, album, duration, myfile}, {
         headers: { Authorization: `Bearer ${auth.token}`, 'Content-Type': 'multipart/form-data' },
       })
-            navigate("/dashboard");
+      window.location.reload();
             setName("")
             setArtist("")
             setAlbum("")
@@ -38,61 +37,64 @@ function AddNewSong({ show, setShow }) {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} className="modal-bg">
         <Modal.Header closeButton>
-          <Modal.Title>Add New Song +</Modal.Title>
+          <Modal.Title>Add New Song</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
+          <Form onSubmit={handleSubmit} >
+            <Form.Group className="mb-3">
               <Form.Control
                 type="text"
-                placeholder="Enter new trackname.."
-             
+                placeholder="Song Name"
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 autoFocus
+                autoComplete="off"
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
               <Form.Control
           
                 type="text"
-                placeholder="Enter artist.."
+                placeholder="Artist"
                 name="artist"
                 value={artist}
                 onChange={(e) => setArtist(e.target.value)}
                 required
-              />
+                autoComplete="off"
+                />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
               <Form.Control
           
                 type="text"
-                placeholder="Enter album.."
+                placeholder="Album"
                 name="album"
                 value={album}
                 onChange={(e) => setAlbum(e.target.value)}
                 required
+                autoComplete="off"
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
               <Form.Control
      
-                type="number"
-                placeholder="Enter duration"
+                type="text"
+                placeholder="Song Length"
                 name="duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
+                autoComplete="off"
               />
             </Form.Group>
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Enter song file input</Form.Label>
+            <Form.Group controlId="formFile" className="mb-3 input-file">
               <Form.Control
                 type="file"
                 onChange={(e) => setMyFile(e.target.files[0])}
+                autoComplete="off"
               />
             </Form.Group>
             <Button variant="success" type="submit">

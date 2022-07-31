@@ -2,7 +2,6 @@ import {Form, Modal, Button} from "react-bootstrap";
 import {useState, useContext} from "react"
 import Authcontext from "../../context/AuthProvider";
 import axios from "../../api/axios";
-import { useNavigate } from "react-router-dom";
 
 const trackUrl = "http://localhost:3001/api/tracks"
 
@@ -12,16 +11,18 @@ function EditSong({showEdit, setShowEdit, track}) {
   const [artist, setArtist] = useState(track.artist);
   const [album, setAlbum] = useState(track.album);
   const [duration, setDuration] = useState(track.duration);
-  const navigate = useNavigate();
+
+  console.log(track.name);
+  console.log(track._id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${trackUrl}/${track._id}`, {name, artist, album, duration}, {
+      await axios.post(`${trackUrl}/${track._id}`, {name, artist, album, duration}, {
         headers: { Authorization: `Bearer ${auth.token}`},
       }).then((response) => {
         console.log(response);
-        navigate("/dashboard");
+        window.location.reload();
             setName("")
             setArtist("")
             setAlbum("")
@@ -33,7 +34,6 @@ function EditSong({showEdit, setShowEdit, track}) {
     }
   };
 
-  console.log(name, artist, album, duration);
 
 
 
@@ -42,12 +42,13 @@ function EditSong({showEdit, setShowEdit, track}) {
   return (
     <>
       <Modal show={showEdit} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton >
           <Modal.Title>Edit Song</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
+            <Form.Group className="mb-3">
+              
               <Form.Control
                 type="text"
                 placeholder="Enter new trackname.."
@@ -58,7 +59,8 @@ function EditSong({showEdit, setShowEdit, track}) {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
+          
               <Form.Control
                 type="text"
                 placeholder="Enter artist.."
@@ -68,7 +70,8 @@ function EditSong({showEdit, setShowEdit, track}) {
                 required
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
+          
               <Form.Control
                 type="text"
                 placeholder="Enter album.."
@@ -78,7 +81,8 @@ function EditSong({showEdit, setShowEdit, track}) {
                 required
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mb-3">
+        
               <Form.Control
                 type="text"
                 placeholder="Enter duration"
@@ -87,17 +91,14 @@ function EditSong({showEdit, setShowEdit, track}) {
                 onChange={(e) => setDuration(e.target.value)}
               />
             </Form.Group>
-            <Button variant="success" type="submit">
-              Edit Song
+            <Button variant="primary" type="submit">
+              Save Changes
             </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose} >
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
